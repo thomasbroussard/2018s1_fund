@@ -9,6 +9,7 @@ import fr.epita.bank.datamodel.InvestmentAccount;
 import fr.epita.bank.datamodel.SavingsAccount;
 import fr.epita.bank.datamodel.Stock;
 import fr.epita.bank.datamodel.StockOrder;
+import fr.epita.bank.exceptions.BusinessException;
 
 public class Launcher {
 
@@ -44,7 +45,11 @@ public class Launcher {
 		stockOrder.setStock(gold);
 		stockOrder.setTicker(15d);
 
-		InvestmentService.validateStockOrder(stockOrder);
+		try {
+			InvestmentService.validateStockOrder(stockOrder);
+		} catch (final BusinessException e) {
+			// TODO display a message in the console
+		}
 
 
 	}

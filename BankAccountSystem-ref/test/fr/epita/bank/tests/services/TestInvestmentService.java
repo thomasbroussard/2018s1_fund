@@ -85,8 +85,8 @@ public class TestInvestmentService {
 
 		// Then (validation)
 
-		// We expect the final balance to be 150 - 3 * 15 - 15 => 150 - 60 = 90
-		if (investment.getBalance() != 90) {
+		// No stock so the operation should not have taken place
+		if (investment.getBalance() != 150) {
 			throw new Exception("the final balance is not correct, expected 90,  got " + investment.getBalance());
 		}
 	}

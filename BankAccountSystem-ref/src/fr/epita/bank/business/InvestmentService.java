@@ -7,6 +7,7 @@ package fr.epita.bank.business;
 
 import fr.epita.bank.datamodel.InvestmentAccount;
 import fr.epita.bank.datamodel.StockOrder;
+import fr.epita.bank.exceptions.BusinessException;
 
 /**
  * <h3>Description</h3>
@@ -25,11 +26,15 @@ import fr.epita.bank.datamodel.StockOrder;
  */
 public class InvestmentService {
 
-	public static void validateStockOrder(StockOrder order) {
+	public static void validateStockOrder(StockOrder order) throws BusinessException {
 		final InvestmentAccount account = order.getAccount();
 		final Double balance = account.getBalance();
 		if (balance == null || balance == 0) {
-			// error case
+			// TODO make a custom exception and throw it
+			return;
+		}
+		if (order.getStock() == null) {
+			// TODO make a custom exception and throw it
 			return;
 		}
 		// perform operation : final balance = initialBalance - (stockUnitPrice * stockOrderQuantity) - ticker
