@@ -1,25 +1,25 @@
 /**
  * Ce fichier est la propriété de Thomas BROUSSARD
  * Code application :
- * Composant : 
+ * Composant :
  */
 package fr.epita.bank.datamodel;
 
-/** 
- * <h3>Description</h3>  
+/**
+ * <h3>Description</h3>
  * <p>This class allows to ...</p>
  *
  * <h3>Usage</h3>
  * <p>This class should be used as follows:
  *   <pre><code>${type_name} instance = new ${type_name}();</code></pre>
  * </p>
- *  
+ *
  * @since $${version}
  * @see See also $${link}
  * @author ${user}
  *
  * ${tags}
  */
-public class InvestmentAccount {
+public class InvestmentAccount extends Account {
 
 }

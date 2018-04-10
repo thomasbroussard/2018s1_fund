@@ -3,10 +3,15 @@
  */
 package fr.epita.bank.launcher;
 
+import fr.epita.bank.business.InvestmentService;
 import fr.epita.bank.datamodel.Customer;
+import fr.epita.bank.datamodel.InvestmentAccount;
 import fr.epita.bank.datamodel.SavingsAccount;
+import fr.epita.bank.datamodel.Stock;
+import fr.epita.bank.datamodel.StockOrder;
 
 public class Launcher {
+
 	public static void main(String[] args) {
 		final Customer john = new Customer();
 
@@ -24,6 +29,23 @@ public class Launcher {
 		System.out.println(john.getName()
 				+ ", your savings account has the following characteristics "
 				+ savings);
+
+		final InvestmentAccount investment = new InvestmentAccount();
+		investment.setBalance(150d);
+		investment.setCustomer(john);
+
+		final Stock gold = new Stock();
+		gold.setName("gold");
+		gold.setUnitPrice(15.0);
+
+		final StockOrder stockOrder = new StockOrder();
+		stockOrder.setAccount(investment);
+		stockOrder.setQuantity(3);
+		stockOrder.setStock(gold);
+		stockOrder.setTicker(15d);
+
+		InvestmentService.validateStockOrder(stockOrder);
+
 	}
 }
 
