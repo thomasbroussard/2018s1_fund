@@ -46,6 +46,7 @@ public class Launcher {
 
 		InvestmentService.validateStockOrder(stockOrder);
 
+
 	}
 }
 
