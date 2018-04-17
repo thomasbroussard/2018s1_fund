@@ -10,35 +10,73 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import fr.epita.iam.datamodel.Identity;
+import fr.epita.iam.services.FileIdentityDAO;
+import fr.epita.iam.ui.ConsoleOperations;
 
 public class TestFiles {
 
 	public static void main(String[] args) throws IOException {
+		final ConsoleOperations console = new ConsoleOperations();
 
-		// basicFileTest();
+		final Identity identity = console.readIdentityFromConsole();
 
-		final Identity identity = new Identity();
-		identity.setDisplayName("Thomas Broussard");
-		identity.setEmail("tbr@tbr.com");
-		identity.setUid("123");
-
-		final File file = new File("C:/tmp/2018s1/identities.txt");
-		final PrintWriter writer = initializePrintWriter(file);
-		writeIdentity(identity, writer);
-		writer.flush();
-		writer.close();
+		final FileIdentityDAO dao = new FileIdentityDAO();
+		dao.create(identity);
+		dao.releaseResources();
+		console.releaseResources();
 
 	}
 
-	/** 
-	 * <h3>Description</h3>  
+	/**
+	 * <h3>Description</h3>
+	 * <p>
+	 * This methods allows to ...
+	 * </p>
+	 *
+	 * <h3>Usage</h3>
+	 * <p>
+	 * It should be used as follows :
+	 * 
+	 * <pre>
+	 * <code> ${enclosing_type} sample;
+	 *
+	 * //...
+	 *
+	 * sample.${enclosing_method}();
+	 *</code>
+	 * </pre>
+	 * </p>
+	 * 
+	 * @since $${version}
+	 * @see Voir aussi $${link}
+	 * @author ${user}
+	 *
+	 *         ${tags}
+	 */
+	private static Identity readIdentityFromConsole(final Scanner scanner) {
+		final Identity identity = new Identity();
+		System.out.println("please input the display name : ");
+		String line = scanner.nextLine();
+		identity.setDisplayName(line);
+		System.out.println("please input the email");
+		line = scanner.nextLine();
+		identity.setEmail(line);
+		System.out.println("please input uid");
+		line = scanner.nextLine();
+		identity.setUid(line);
+		return identity;
+	}
+
+	/**
+	 * <h3>Description</h3>
 	 * <p>This methods allows to ...</p>
 	 *
 	 * <h3>Usage</h3>
 	 * <p>It should be used as follows :
-	 *   
+	 *
 	 * <pre><code> ${enclosing_type} sample;
 	 *
 	 * //...
@@ -46,7 +84,7 @@ public class TestFiles {
 	 * sample.${enclosing_method}();
 	 *</code></pre>
 	 * </p>
-	 *  
+	 *
 	 * @since $${version}
 	 * @see Voir aussi $${link}
 	 * @author ${user}
@@ -61,13 +99,13 @@ public class TestFiles {
 		writer.println("---");
 	}
 
-	/** 
-	 * <h3>Description</h3>  
+	/**
+	 * <h3>Description</h3>
 	 * <p>This methods allows to ...</p>
 	 *
 	 * <h3>Usage</h3>
 	 * <p>It should be used as follows :
-	 *   
+	 *
 	 * <pre><code> ${enclosing_type} sample;
 	 *
 	 * //...
@@ -75,7 +113,7 @@ public class TestFiles {
 	 * sample.${enclosing_method}();
 	 *</code></pre>
 	 * </p>
-	 *  
+	 *
 	 * @since $${version}
 	 * @see Voir aussi $${link}
 	 * @author ${user}
