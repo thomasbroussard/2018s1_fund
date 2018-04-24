@@ -1,7 +1,5 @@
 /**
- * Ce fichier est la propriété de Thomas BROUSSARD
- * Code application :
- * Composant :
+ * Ce fichier est la propriété de Thomas BROUSSARD Code application : Composant :
  */
 package fr.epita.iam.services;
 
@@ -39,16 +37,46 @@ public class FileIdentityDAO {
 	public List<Identity> search(Identity criteria) {
 		final ArrayList<Identity> list = new ArrayList<>();
 		while (scanner.hasNext()) {
+
 			scanner.nextLine();
 			final String displayName = scanner.nextLine();
 			final String email = scanner.nextLine();
 			final String uid = scanner.nextLine();
 			scanner.nextLine();
-			list.add(new Identity(displayName, uid, email));
+			final Identity currentIdentity = new Identity(displayName, uid, email);
+			if (matchString(currentIdentity.getEmail(), criteria.getEmail())
+					|| matchString(currentIdentity.getDisplayName(), criteria.getDisplayName())) {
+				list.add(currentIdentity);
+			}
 
 		}
 
 		return list;
+	}
+
+	/**
+	 * <h3>Description</h3>
+	 * <p>This methods allows to ...</p>
+	 *
+	 * <h3>Usage</h3>
+	 * <p>It should be used as follows :
+	 *
+	 * <pre><code> ${enclosing_type} sample;
+	 *
+	 * //...
+	 *
+	 * sample.${enclosing_method}();
+	 *</code></pre>
+	 * </p>
+	 *
+	 * @since $${version}
+	 * @see Voir aussi $${link}
+	 * @author ${user}
+	 *
+	 * ${tags}
+	 */
+	private boolean matchString(String current, String expected) {
+		return current.contains(expected);
 	}
 
 	public void update(Identity identity) {
