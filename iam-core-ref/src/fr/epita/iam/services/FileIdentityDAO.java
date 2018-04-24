@@ -12,15 +12,19 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import fr.epita.iam.datamodel.Identity;
 
 public class FileIdentityDAO {
 
-	PrintWriter writer;
+	private final PrintWriter writer;
+	private final Scanner scanner;
 
 	public FileIdentityDAO() throws FileNotFoundException, IOException {
-		writer = initializePrintWriter(new File("C:/tmp/2018s1/identities.txt"));
+		final File file = new File("C:/tmp/2018s1/identities.txt");
+		writer = initializePrintWriter(file);
+		scanner = initializeScanner(file);
 	}
 
 	public void create(Identity identity) {
@@ -33,8 +37,18 @@ public class FileIdentityDAO {
 	}
 
 	public List<Identity> search(Identity criteria) {
+		final ArrayList<Identity> list = new ArrayList<>();
+		while (scanner.hasNext()) {
+			scanner.nextLine();
+			final String displayName = scanner.nextLine();
+			final String email = scanner.nextLine();
+			final String uid = scanner.nextLine();
+			scanner.nextLine();
+			list.add(new Identity(displayName, email, uid));
 
-		return new ArrayList<>();
+		}
+
+		return list;
 	}
 
 	public void update(Identity identity) {
@@ -53,6 +67,15 @@ public class FileIdentityDAO {
 		final FileOutputStream fos = new FileOutputStream(file, true);
 		final PrintWriter writer = new PrintWriter(fos);
 		return writer;
+	}
+
+	private static Scanner initializeScanner(final File file) throws IOException, FileNotFoundException {
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
+			file.createNewFile();
+		}
+
+		return new Scanner(file);
 	}
 
 	public void releaseResources() {

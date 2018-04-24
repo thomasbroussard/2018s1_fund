@@ -29,6 +29,24 @@ public class Identity {
 	private Map<String, String> attributes;
 
 	/**
+	 * @param displayName
+	 * @param uid
+	 * @param email
+	 */
+	public Identity(String displayName, String uid, String email) {
+		this.displayName = displayName;
+		this.uid = uid;
+		this.email = email;
+	}
+
+	/**
+	 * Default constructor
+	 */
+	public Identity() {
+
+	}
+
+	/**
 	 * @return the displayName
 	 */
 	public String getDisplayName() {
@@ -86,6 +104,15 @@ public class Identity {
 	 */
 	public void setAttributes(Map<String, String> attributes) {
 		this.attributes = attributes;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "Identity [displayName=" + displayName + ", uid=" + uid + ", email=" + email + ", attributes=" + attributes + "]";
 	}
 
 }

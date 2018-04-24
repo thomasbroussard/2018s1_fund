@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Scanner;
 
 import fr.epita.iam.datamodel.Identity;
@@ -25,6 +26,8 @@ public class TestFiles {
 
 		final FileIdentityDAO dao = new FileIdentityDAO();
 		dao.create(identity);
+		final List<Identity> list = dao.search(new Identity());
+		System.out.println(list);
 		dao.releaseResources();
 		console.releaseResources();
 
@@ -39,7 +42,7 @@ public class TestFiles {
 	 * <h3>Usage</h3>
 	 * <p>
 	 * It should be used as follows :
-	 * 
+	 *
 	 * <pre>
 	 * <code> ${enclosing_type} sample;
 	 *
@@ -49,7 +52,7 @@ public class TestFiles {
 	 *</code>
 	 * </pre>
 	 * </p>
-	 * 
+	 *
 	 * @since $${version}
 	 * @see Voir aussi $${link}
 	 * @author ${user}
