@@ -7,6 +7,7 @@ package fr.epita.iam.launcher;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
 import fr.epita.iam.services.FileIdentityDAO;
@@ -74,6 +75,10 @@ public class Launcher {
 
 
 		//Search?
+		final Identity criteria = console.readCriteriaFromConsole();
+		final List<Identity> resultList = dao.search(criteria);
+		console.displayIdentitiesInConsole(resultList);
+
 		//Update
 
 

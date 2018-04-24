@@ -5,6 +5,7 @@
  */
 package fr.epita.iam.ui;
 
+import java.util.List;
 import java.util.Scanner;
 
 import fr.epita.iam.datamodel.Identity;
@@ -44,6 +45,27 @@ public class ConsoleOperations {
 		line = scanner.nextLine();
 		identity.setUid(line);
 		return identity;
+	}
+
+	public Identity readCriteriaFromConsole() {
+		System.out.println("Enter criteria");
+		final Identity identity = new Identity();
+		System.out.println("please input the criterion for display name : ");
+		String line = scanner.nextLine();
+		identity.setDisplayName(line);
+		System.out.println("please input the criterion for email");
+		line = scanner.nextLine();
+		identity.setEmail(line);
+
+		return identity;
+	}
+
+	public void displayIdentitiesInConsole(List<Identity> identities) {
+		int i = 1;
+		for (final Identity identity : identities) {
+			System.out.print(i++);
+			System.out.println(" - " + identity);
+		}
 	}
 
 	public void releaseResources() {

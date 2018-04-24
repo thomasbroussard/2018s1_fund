@@ -19,7 +19,57 @@ import fr.epita.iam.ui.ConsoleOperations;
 
 public class TestFiles {
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
+		// testWriteThenDisplayList();
+
+		// given
+		final FileIdentityDAO dao = new FileIdentityDAO();
+		final Identity quentin = new Identity("quentin", "7893", "qdca@qdca.com");
+		dao.create(quentin);
+
+		final Identity criteria = new Identity("quen", null, "qdc");
+
+		// when
+		final List<Identity> resultList = dao.search(criteria);
+
+		// then
+		boolean found = false;
+		for (final Identity identity : resultList) {
+			if (identity.getUid().equals(quentin.getUid())) {
+				found = true;
+				break;
+			}
+		}
+
+		if (!found) {
+			throw new Exception("the search method did not work");
+		}
+		System.out.println("search successful!");
+
+	}
+
+	/**
+	 * <h3>Description</h3>
+	 * <p>This methods allows to ...</p>
+	 *
+	 * <h3>Usage</h3>
+	 * <p>It should be used as follows :
+	 *
+	 * <pre><code> ${enclosing_type} sample;
+	 *
+	 * //...
+	 *
+	 * sample.${enclosing_method}();
+	 *</code></pre>
+	 * </p>
+	 *
+	 * @since $${version}
+	 * @see Voir aussi $${link}
+	 * @author ${user}
+	 *
+	 * ${tags}
+	 */
+	private static void testWriteThenDisplayList() throws FileNotFoundException, IOException {
 		final ConsoleOperations console = new ConsoleOperations();
 
 		final Identity identity = console.readIdentityFromConsole();
@@ -30,7 +80,6 @@ public class TestFiles {
 		System.out.println(list);
 		dao.releaseResources();
 		console.releaseResources();
-
 	}
 
 	/**

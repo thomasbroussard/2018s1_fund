@@ -44,7 +44,7 @@ public class FileIdentityDAO {
 			final String email = scanner.nextLine();
 			final String uid = scanner.nextLine();
 			scanner.nextLine();
-			list.add(new Identity(displayName, email, uid));
+			list.add(new Identity(displayName, uid, email));
 
 		}
 
