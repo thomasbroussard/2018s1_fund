@@ -1,3 +1,10 @@
+#TODO (2018/05/03)
+For the next time:
+* do the tutorial "JDBC DAO" from the website : http://thomas-broussard.fr/work/java/tutorials/fundamental/dao/tutorial-create-a-dao.html
+
+Good holidays!
+
+
 #TODO (2018/04/24)
 For the next time :
 * find a way to replace the search filter by a lambda expression [lambdas](https://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html "lambdas")
