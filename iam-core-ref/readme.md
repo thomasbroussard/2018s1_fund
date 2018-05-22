@@ -1,6 +1,15 @@
+#TODO (2018/05/22)
+For the next time:
+* finish the test case to insert and select
+* create the IdentityJdbcDAO structure
+* Implement create and search methods in the IdentityJdbcDAO 
+
+
+
 #TODO (2018/05/03)
 For the next time:
 * do the tutorial "JDBC DAO" from the website : http://thomas-broussard.fr/work/java/tutorials/fundamental/dao/tutorial-create-a-dao.html
+
 
 Good holidays!
 
