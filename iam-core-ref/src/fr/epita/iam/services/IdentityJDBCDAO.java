@@ -42,7 +42,8 @@ public class IdentityJDBCDAO {
 		Connection connection = null;
 
 		// When I connect
-		connection = DriverManager.getConnection(url, ConfigurationService.getProperty("db.user"), ConfigurationService.getProperty("db.pwd"););
+		connection = DriverManager.getConnection(url, ConfigurationService.getProperty("db.user"),
+				ConfigurationService.getProperty("db.pwd"));
 		return connection;
 
 	}
