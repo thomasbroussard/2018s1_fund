@@ -38,8 +38,8 @@ public class IdentityJDBCDAO {
 
 	private static Connection getConnection() throws SQLException {
 		// Given this context
-		final String url = ConfigurationService.getProperty("db.url")
-				Connection connection = null;
+		final String url = ConfigurationService.getProperty("db.url");
+		Connection connection = null;
 
 		// When I connect
 		connection = DriverManager.getConnection(url, ConfigurationService.getProperty("db.user"), ConfigurationService.getProperty("db.pwd"););
