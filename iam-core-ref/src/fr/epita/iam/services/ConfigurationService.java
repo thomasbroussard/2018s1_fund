@@ -30,6 +30,11 @@ import java.util.Properties;
  */
 public class ConfigurationService {
 
+	public static final String BACKEND_MODE = "backend.mode";
+	public static final String FALLBACK_BACKEND_MODE = "fallback.backend.mode";
+	public static final String DB_BACKEND = "db";
+	public static final String FILE_BACKEND = "file";
+
 	private static Properties properties;
 
 	static {
@@ -47,12 +52,13 @@ public class ConfigurationService {
 
 	}
 
-	public static Integer getIntProperty(String key) {
+	public static Integer getIntProperty(ConfKey key) {
 		final String valueAsString = getProperty(key);
 		return Integer.valueOf(valueAsString);
 	}
-	public static String getProperty(String key) {
-		return properties.getProperty(key);
+
+	public static String getProperty(ConfKey key) {
+		return properties.getProperty(key.getKey());
 	}
 
 }

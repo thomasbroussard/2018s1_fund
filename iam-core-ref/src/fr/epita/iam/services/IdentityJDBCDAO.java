@@ -3,6 +3,7 @@
  */
 package fr.epita.iam.services;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -34,7 +35,12 @@ import fr.epita.iam.datamodel.Identity;
  *
  *         ${tags}
  */
-public class IdentityJDBCDAO {
+public class IdentityJDBCDAO implements IdentityDAO {
+
+	static {
+		IdentityDAOFactoryDynamicRegistration.registeredDAOs.put("db", new IdentityJDBCDAO());
+
+	}
 
 	private static Connection getConnection() throws SQLException {
 		// Given this context
@@ -48,6 +54,7 @@ public class IdentityJDBCDAO {
 
 	}
 
+	@Override
 	public void create(Identity identity) {
 		Connection connection = null;
 		try {
@@ -71,20 +78,24 @@ public class IdentityJDBCDAO {
 		}
 	}
 
+	@Override
 	public void delete(Identity identity) {
 
 	}
 
+	@Override
 	public void update(Identity identity) {
 
 	}
 
-	public Identity getById(int id) {
+	@Override
+	public Identity getById(Serializable id) {
 		final Identity identity = new Identity();
 
 		return identity;
 	}
 
+	@Override
 	public List<Identity> search(Identity criteria) {
 		final List<Identity> list = new ArrayList<>();
 
@@ -118,6 +129,24 @@ public class IdentityJDBCDAO {
 			}
 		}
 		return list;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see fr.epita.iam.services.IdentityDAO#healthCheck()
+	 */
+	@Override
+	public boolean healthCheck() {
+		try {
+			final Connection connection = getConnection();
+			connection.close();
+			return true;
+		} catch (final SQLException sqle) {
+			// TODO log
+
+		}
+		return false;
+
 	}
 
 }

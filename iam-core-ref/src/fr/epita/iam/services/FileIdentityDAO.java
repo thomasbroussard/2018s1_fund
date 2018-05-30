@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -15,7 +16,25 @@ import java.util.function.BiPredicate;
 
 import fr.epita.iam.datamodel.Identity;
 
-public class FileIdentityDAO {
+public class FileIdentityDAO implements IdentityDAO {
+
+	static {
+		try {
+			IdentityDAOFactoryDynamicRegistration.registeredDAOs.put("file", new FileIdentityDAO(new BiPredicate<Identity, Identity>() {
+
+				@Override
+				public boolean test(Identity identity1, Identity identity2) {
+					return identity1.getEmail().startsWith(identity2.getEmail())
+							|| identity1.getDisplayName().startsWith(identity2.getDisplayName());
+				}
+			}));
+		} catch (final FileNotFoundException e) {
+			// TODO log
+		} catch (final IOException e) {
+			// FIXME Use a logger to trace the following error
+			// LOGGER.error("An error occured", ${exception_var})
+		}
+	}
 
 	private final PrintWriter writer;
 	private final Scanner scanner;
@@ -39,6 +58,7 @@ public class FileIdentityDAO {
 		this.searchFilter = searchFilter;
 	}
 
+	@Override
 	public void create(Identity identity) {
 		writer.println("---");
 		writer.println(identity.getDisplayName());
@@ -48,6 +68,7 @@ public class FileIdentityDAO {
 		writer.flush();
 	}
 
+	@Override
 	public List<Identity> search(Identity criteria) {
 		final ArrayList<Identity> list = new ArrayList<>();
 		while (scanner.hasNext()) {
@@ -98,10 +119,12 @@ public class FileIdentityDAO {
 		return current.contains(expected);
 	}
 
+	@Override
 	public void update(Identity identity) {
 
 	}
 
+	@Override
 	public void delete(Identity identity) {
 
 	}
@@ -127,5 +150,24 @@ public class FileIdentityDAO {
 
 	public void releaseResources() {
 		writer.close();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see fr.epita.iam.services.DAO#getById(java.io.Serializable)
+	 */
+	@Override
+	public Identity getById(Serializable id) {
+		return new Identity();// TODO implement
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see fr.epita.iam.services.IdentityDAO#healthCheck()
+	 */
+	@Override
+	public boolean healthCheck() {
+		// TODO implements
+		return true;
 	}
 }

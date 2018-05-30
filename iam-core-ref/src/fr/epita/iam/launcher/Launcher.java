@@ -6,10 +6,10 @@ package fr.epita.iam.launcher;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
-import java.util.function.BiPredicate;
 
 import fr.epita.iam.datamodel.Identity;
-import fr.epita.iam.services.FileIdentityDAO;
+import fr.epita.iam.services.IdentityDAO;
+import fr.epita.iam.services.IdentityDAOFactory;
 import fr.epita.iam.ui.ConsoleOperations;
 
 /**
@@ -66,17 +66,14 @@ public class Launcher {
 	 */
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		// initialize resources
-		final FileIdentityDAO dao1 = new FileIdentityDAO((identity1, identity2) -> identity1.getEmail().contains(identity2.getEmail())
-				|| identity1.getDisplayName().contains(identity2.getDisplayName()));
-
-		final FileIdentityDAO dao = new FileIdentityDAO(new BiPredicate<Identity, Identity>() {
-
-			@Override
-			public boolean test(Identity identity1, Identity identity2) {
-				return identity1.getEmail().startsWith(identity2.getEmail())
-						|| identity1.getDisplayName().startsWith(identity2.getDisplayName());
-			}
-		});
+		IdentityDAO dao = null;
+		try {
+			dao = IdentityDAOFactory.getDAO();
+		} catch (final Exception e) {
+			// TODO log
+			// cannot continue
+			return;
+		}
 		final ConsoleOperations console = new ConsoleOperations();
 		// Welcome
 		// Authentication
@@ -95,9 +92,6 @@ public class Launcher {
 		// Update
 
 		// Delete
-
-		// release resources
-		dao.releaseResources();
 		console.releaseResources();
 
 	}
