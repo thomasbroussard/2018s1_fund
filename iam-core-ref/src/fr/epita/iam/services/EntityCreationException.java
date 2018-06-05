@@ -20,30 +20,17 @@ package fr.epita.iam.services;
  *
  * ${tags}
  */
-public enum ConfKey {
-	/**
-	 * this is the key to choose the backend mode
-	 */
-	BACKEND_MODE("backend.mode"),
-	/**
-	 * this is the key to choose the fall back backend mode
-	 */
+public class EntityCreationException extends Exception {
 
-	FALLBACK_BACKEND_MODE("backend.mode"),
 
-	;
-
-	private String key;
+	Object entity;
 
 	/**
 	 *
 	 */
-	private ConfKey(String key) {
-		this.key = key;
-	}
-
-	public String getKey() {
-		return key;
+	public EntityCreationException(Object entity, Throwable cause) {
+		this.entity = entity;
+		initCause(cause);
 	}
 
 }

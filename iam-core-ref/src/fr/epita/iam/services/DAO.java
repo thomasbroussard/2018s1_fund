@@ -27,14 +27,14 @@ import fr.epita.iam.datamodel.Identity;
  */
 public interface DAO<T> {
 
-	public void create(T entity);
+	public void create(T entity) throws EntityCreationException;
 
-	public void delete(T entity);
+	public void delete(T entity) throws EntityDeletionException;
 
-	public void update(T entity);
+	public void update(T entity) throws EntityUpdateException;
 
-	public Identity getById(Serializable id);
+	public Identity getById(Serializable id) throws EntityReadException;
 
-	public List<Identity> search(T criteria);
+	public List<Identity> search(T criteria) throws EntitySearchException;
 
 }

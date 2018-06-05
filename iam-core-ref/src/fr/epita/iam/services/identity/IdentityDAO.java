@@ -3,9 +3,10 @@
  * Code application :
  * Composant :
  */
-package fr.epita.iam.services;
+package fr.epita.iam.services.identity;
 
 import fr.epita.iam.datamodel.Identity;
+import fr.epita.iam.services.DAO;
 
 /**
  * <h3>Description</h3>

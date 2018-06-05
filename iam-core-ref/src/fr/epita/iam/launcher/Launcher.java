@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
-import fr.epita.iam.services.IdentityDAO;
-import fr.epita.iam.services.IdentityDAOFactory;
+import fr.epita.iam.services.EntityCreationException;
+import fr.epita.iam.services.EntitySearchException;
+import fr.epita.iam.services.identity.IdentityDAO;
+import fr.epita.iam.services.identity.IdentityDAOFactory;
 import fr.epita.iam.ui.ConsoleOperations;
 
 /**
@@ -82,12 +84,21 @@ public class Launcher {
 
 		// Create
 		final Identity identity = console.readIdentityFromConsole();
-		dao.create(identity);
-
+		try {
+			dao.create(identity);
+		} catch (final EntityCreationException ece) {
+			System.out.println(ece.getMessage());
+		}
 		// Search?
 		final Identity criteria = console.readCriteriaFromConsole();
-		final List<Identity> resultList = dao.search(criteria);
-		console.displayIdentitiesInConsole(resultList);
+		List<Identity> resultList;
+		try {
+			resultList = dao.search(criteria);
+			console.displayIdentitiesInConsole(resultList);
+		} catch (final EntitySearchException e) {
+			System.out.println(e.getMessage());
+		}
+
 
 		// Update
 

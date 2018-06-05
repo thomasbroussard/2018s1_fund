@@ -1,7 +1,7 @@
 /**
  * Ce fichier est la propriété de Thomas BROUSSARD Code application : Composant :
  */
-package fr.epita.iam.services;
+package fr.epita.iam.services.identity;
 
 import java.io.File;
 import java.io.FileNotFoundException;

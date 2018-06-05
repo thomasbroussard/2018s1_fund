@@ -8,7 +8,7 @@ package fr.epita.iam.tests.db;
 import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
-import fr.epita.iam.services.IdentityJDBCDAO;
+import fr.epita.iam.services.identity.IdentityJDBCDAO;
 
 /**
  * <h3>Description</h3>

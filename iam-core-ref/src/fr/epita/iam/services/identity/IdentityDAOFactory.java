@@ -1,11 +1,13 @@
 /**
  * Ce fichier est la propriété de Thomas BROUSSARD Code application : Composant :
  */
-package fr.epita.iam.services;
+package fr.epita.iam.services.identity;
 
 import java.util.function.BiPredicate;
 
 import fr.epita.iam.datamodel.Identity;
+import fr.epita.iam.services.conf.ConfKey;
+import fr.epita.iam.services.conf.ConfigurationService;
 
 /**
  * <h3>Description</h3>

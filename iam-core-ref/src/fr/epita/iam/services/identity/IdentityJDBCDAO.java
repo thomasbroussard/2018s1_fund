@@ -1,7 +1,7 @@
 /**
  * Ce fichier est la propriété de Thomas BROUSSARD Code application : Composant :
  */
-package fr.epita.iam.services;
+package fr.epita.iam.services.identity;
 
 import java.io.Serializable;
 import java.sql.Connection;
@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
+import fr.epita.iam.services.EntityCreationException;
+import fr.epita.iam.services.conf.ConfKey;
+import fr.epita.iam.services.conf.ConfigurationService;
 
 /**
  * <h3>Description</h3>
@@ -38,29 +41,31 @@ import fr.epita.iam.datamodel.Identity;
 public class IdentityJDBCDAO implements IdentityDAO {
 
 	static {
-		IdentityDAOFactoryDynamicRegistration.registeredDAOs.put("db", new IdentityJDBCDAO());
+		IdentityDAOFactoryDynamicRegistration.registeredDAOs.put(ConfKey.DB_BACKEND.getKey(), new IdentityJDBCDAO());
 
 	}
 
 	private static Connection getConnection() throws SQLException {
 		// Given this context
-		final String url = ConfigurationService.getProperty("db.url");
+		final String url = ConfigurationService.getProperty(ConfKey.DB_URL);
 		Connection connection = null;
 
 		// When I connect
-		connection = DriverManager.getConnection(url, ConfigurationService.getProperty("db.user"),
-				ConfigurationService.getProperty("db.pwd"));
+		connection = DriverManager.getConnection(url, ConfigurationService.getProperty(ConfKey.DB_USER),
+
+				ConfigurationService.getProperty(ConfKey.DB_PASSWORD));
 		return connection;
 
 	}
 
 	@Override
-	public void create(Identity identity) {
+	public void create(Identity identity) throws EntityCreationException {
 		Connection connection = null;
 		try {
 			connection = getConnection();
 			final PreparedStatement pstmt = connection
-					.prepareStatement(ConfigurationService.getProperty("identity.search"));
+					.prepareStatement(ConfigurationService.getProperty(ConfKey.IDENTITY_SEARCH_QUERY));
+
 			pstmt.setString(1, identity.getDisplayName());
 			pstmt.setString(2, identity.getEmail());
 			pstmt.setString(3, identity.getUid());
@@ -72,9 +77,11 @@ public class IdentityJDBCDAO implements IdentityDAO {
 				try {
 					connection.close();
 				} catch (final SQLException e1) {
-					// TODO handle that
+
 				}
 			}
+			final EntityCreationException exception = new EntityCreationException(identity, e);
+			throw exception;
 		}
 	}
 

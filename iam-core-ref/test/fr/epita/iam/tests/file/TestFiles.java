@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import fr.epita.iam.datamodel.Identity;
-import fr.epita.iam.services.FileIdentityDAO;
+import fr.epita.iam.services.identity.FileIdentityDAO;
 import fr.epita.iam.ui.ConsoleOperations;
 
 public class TestFiles {
