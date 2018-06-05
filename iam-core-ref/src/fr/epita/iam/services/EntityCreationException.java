@@ -33,4 +33,8 @@ public class EntityCreationException extends Exception {
 		initCause(cause);
 	}
 
+	public String getUserMessage() {
+		return "the following entity creation has failed :" + entity.toString();
+	}
+
 }

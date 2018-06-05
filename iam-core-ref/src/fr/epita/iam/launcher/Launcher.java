@@ -73,7 +73,7 @@ public class Launcher {
 			dao = IdentityDAOFactory.getDAO();
 		} catch (final Exception e) {
 			// TODO log
-			// cannot continue
+
 			return;
 		}
 		final ConsoleOperations console = new ConsoleOperations();
