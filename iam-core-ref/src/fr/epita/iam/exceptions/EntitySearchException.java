@@ -3,7 +3,7 @@
  * Code application :
  * Composant : 
  */
-package fr.epita.iam.services;
+package fr.epita.iam.exceptions;
 
 /** 
  * <h3>Description</h3>  
@@ -20,6 +20,6 @@ package fr.epita.iam.services;
  *
  * ${tags}
  */
-public class EntityDeletionException extends Exception {
+public class EntitySearchException extends Exception {
 
 }

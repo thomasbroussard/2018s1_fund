@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
-import fr.epita.iam.services.EntityCreationException;
+import fr.epita.iam.exceptions.EntityCreationException;
 import fr.epita.iam.services.conf.ConfKey;
 import fr.epita.iam.services.conf.ConfigurationService;
 
@@ -64,7 +64,7 @@ public class IdentityJDBCDAO implements IdentityDAO {
 		try {
 			connection = getConnection();
 			final PreparedStatement pstmt = connection
-					.prepareStatement(ConfigurationService.getProperty());
+					.prepareStatement(ConfigurationService.getProperty(ConfKey.IDENTITY_INSERT_QUERY));
 
 			pstmt.setString(1, identity.getDisplayName());
 			pstmt.setString(2, identity.getEmail());

@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
-import fr.epita.iam.services.EntityCreationException;
-import fr.epita.iam.services.EntitySearchException;
+import fr.epita.iam.exceptions.EntityCreationException;
+import fr.epita.iam.exceptions.EntitySearchException;
 import fr.epita.iam.services.identity.IdentityDAO;
 import fr.epita.iam.services.identity.IdentityDAOFactory;
 import fr.epita.iam.ui.ConsoleOperations;

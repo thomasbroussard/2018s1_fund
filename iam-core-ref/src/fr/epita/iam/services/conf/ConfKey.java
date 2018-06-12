@@ -56,6 +56,10 @@ public enum ConfKey {
 	 */
 	IDENTITY_SEARCH_QUERY(
 			"identity.search"),
+	/**
+	 *
+	 */
+	IDENTITY_INSERT_QUERY("identity.insert"),
 
 	;
 

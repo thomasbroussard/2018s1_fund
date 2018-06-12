@@ -3,7 +3,7 @@
  * Code application :
  * Composant : 
  */
-package fr.epita.iam.services;
+package fr.epita.iam.exceptions;
 
 /** 
  * <h3>Description</h3>  

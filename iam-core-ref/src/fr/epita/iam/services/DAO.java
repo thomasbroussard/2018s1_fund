@@ -9,6 +9,11 @@ import java.io.Serializable;
 import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
+import fr.epita.iam.exceptions.EntityCreationException;
+import fr.epita.iam.exceptions.EntityDeletionException;
+import fr.epita.iam.exceptions.EntityReadException;
+import fr.epita.iam.exceptions.EntitySearchException;
+import fr.epita.iam.exceptions.EntityUpdateException;
 
 /**
  * <h3>Description</h3>
