@@ -55,7 +55,7 @@ public enum ConfKey {
 	 *
 	 */
 	IDENTITY_SEARCH_QUERY(
-			"select IDENTITY_DISPLAYNAME, IDENTITY_EMAIL, IDENTITY_UID from IDENTITIES where IDENTITY_DISPLAYNAME like ? or IDENTITY_EMAIL like ?"),
+			"identity.search"),
 
 	;
 

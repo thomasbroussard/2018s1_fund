@@ -41,9 +41,9 @@ public class IdentityDAOFactory {
 
 		if (currentInstance == null) {
 
-			getInstance(backendMode);
+			currentInstance = getInstance(backendMode);
 		}
-		if (!currentInstance.healthCheck()) {
+		if (currentInstance != null && !currentInstance.healthCheck()) {
 			fallbackActivated = true;
 			final String fallbackMode = ConfigurationService.getProperty(ConfKey.FALLBACK_BACKEND_MODE);
 			currentInstance = getInstance(fallbackMode);

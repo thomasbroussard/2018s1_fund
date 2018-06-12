@@ -64,7 +64,7 @@ public class IdentityJDBCDAO implements IdentityDAO {
 		try {
 			connection = getConnection();
 			final PreparedStatement pstmt = connection
-					.prepareStatement(ConfigurationService.getProperty(ConfKey.IDENTITY_SEARCH_QUERY));
+					.prepareStatement(ConfigurationService.getProperty());
 
 			pstmt.setString(1, identity.getDisplayName());
 			pstmt.setString(2, identity.getEmail());

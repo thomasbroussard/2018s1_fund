@@ -8,7 +8,8 @@ package fr.epita.iam.tests.db;
 import java.util.List;
 
 import fr.epita.iam.datamodel.Identity;
-import fr.epita.iam.services.identity.IdentityJDBCDAO;
+import fr.epita.iam.services.identity.IdentityDAO;
+import fr.epita.iam.services.identity.IdentityDAOFactory;
 
 /**
  * <h3>Description</h3>
@@ -31,7 +32,7 @@ public class TestJDBCDAO {
 		// testWriteThenDisplayList();
 
 		// given
-		final IdentityJDBCDAO dao = new IdentityJDBCDAO();
+		final IdentityDAO dao = IdentityDAOFactory.getDAO();
 		final Identity quentin = new Identity("quentin", "7893", "qdca@qdca.com");
 		dao.create(quentin);
 
