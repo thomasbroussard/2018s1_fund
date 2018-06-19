@@ -14,6 +14,9 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -49,6 +52,24 @@ import fr.epita.iam.exceptions.EntityUpdateException;
  *         ${tags}
  */
 public class IdentityXMLDAO implements IdentityDAO {
+
+	private Document document;
+	/**
+	 *
+	 */
+	public IdentityXMLDAO() {
+		final List<Identity> results = new ArrayList<>();
+		final File file = new File("test/identities.xml");
+		document = null;
+
+		try {
+			document = getDocument(file);
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// FIXME Use a logger to trace the following error
+			// LOGGER.error("An error occured", ${exception_var})
+			// ignore this at this moment, but it is to be converted to a "DaoInitializationException"
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -92,36 +113,75 @@ public class IdentityXMLDAO implements IdentityDAO {
 	 */
 	@Override
 	public List<Identity> search(Identity criteria) throws EntitySearchException {
+
+		final String xpathExpression = "/identities/identity[ ./email/text() = '" + criteria.getEmail()
+		+ "' and contains(./displayName/text(), '" + criteria.getDisplayName() + "')]";
+		final List<Element> elements = getElements(xpathExpression);
+
 		final List<Identity> results = new ArrayList<>();
-		final File file = new File("test/identities.xml");
-		if (!file.exists()) {
-			return results;
-		}
-		Document document = null;
 
-		try {
-			document = getDocument(file);
-		} catch (ParserConfigurationException | SAXException | IOException e) {
-			// FIXME Use a logger to trace the following error
-			// LOGGER.error("An error occured", ${exception_var})
-			// ignore this at this moment, but it is to be converted to a "DaoInitializationException"
-		}
-
-		final NodeList identityNodes = document.getElementsByTagName("identity");
-
-		for (int i = 0; i < identityNodes.getLength(); i++) {
-			final Identity identity = new Identity();
-			final Element item = (Element) identityNodes.item(i);
-			final String displayName = item.getElementsByTagName("displayName").item(0).getTextContent();
-			final String email = item.getElementsByTagName("email").item(0).getTextContent();
-			final String uid = item.getElementsByTagName("uid").item(0).getTextContent();
-			identity.setDisplayName(displayName);
-			identity.setEmail(email);
-			identity.setUid(uid);
+		for (final Element element : elements) {
+			final Identity identity = getIdentityFromElement(element);
 			results.add(identity);
 		}
 
 		return results;
+	}
+
+	/**
+	 * <h3>Description</h3>
+	 * <p>
+	 * This methods allows to ...
+	 * </p>
+	 *
+	 * <h3>Usage</h3>
+	 * <p>
+	 * It should be used as follows :
+	 *
+	 * <pre>
+	 * <code> ${enclosing_type} sample;
+	 *
+	 * //...
+	 *
+	 * sample.${enclosing_method}();
+	 *</code>
+	 * </pre>
+	 * </p>
+	 *
+	 * @since $${version}
+	 * @see Voir aussi $${link}
+	 * @author ${user}
+	 *
+	 *         ${tags}
+	 */
+	private Identity getIdentityFromElement(Element item) {
+		final Identity identity = new Identity();
+		final String displayName = item.getElementsByTagName("displayName").item(0).getTextContent();
+		final String email = item.getElementsByTagName("email").item(0).getTextContent();
+		final String uid = item.getElementsByTagName("uid").item(0).getTextContent();
+		identity.setDisplayName(displayName);
+		identity.setEmail(email);
+		identity.setUid(uid);
+		return identity;
+	}
+
+	private List<Element> getElements(String xpathExpr) {
+		final XPathFactory xpathFactory = XPathFactory.newInstance();
+		javax.xml.xpath.XPathExpression expr;
+		try {
+			expr = xpathFactory.newXPath().compile(xpathExpr);
+			final NodeList xpathEval = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
+			final List<Element> results = new ArrayList<>();
+			for (int i = 0; i < xpathEval.getLength(); i++) {
+				results.add((Element) xpathEval.item(i));
+			}
+			return results;
+		} catch (final XPathExpressionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ArrayList<>();
+
 	}
 
 	/**

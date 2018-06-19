@@ -33,16 +33,17 @@ public class TestXMLDAO {
 
 		// given
 		final IdentityDAO dao = new IdentityXMLDAO();
-		final Identity quentin = new Identity("quentin", "7893", "qdca@qdca.com");
+		final Identity quentin = new Identity("quentin", "7893", "qdc@qdc.com");
 		dao.create(quentin);
 
-		final Identity criteria = new Identity("quen", null, "qdc");
+		final Identity criteria = new Identity("quen", null, "qdc@qdc.com");
 
 		// when
 		final List<Identity> resultList = dao.search(criteria);
 
+
 		// then
-		if (resultList.size() != 2) {
+		if (resultList.size() != 1) {
 			throw new Exception("the search method did not work");
 		}
 		System.out.println(resultList);

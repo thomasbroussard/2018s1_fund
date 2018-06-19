@@ -1,5 +1,12 @@
+#TODO
+implement the create method in the XML DAO
+Quiz date is planned on 27th of june
+Due date for project is 13th of July
+
+
 #TODO 
 review this site : https://www.javacodeexamples.com/online-java-test-quiz
+
 
 #TODO (2018/05/22)
 For the next time:
