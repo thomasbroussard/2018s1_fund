@@ -3,7 +3,7 @@
  * Code application :
  * Composant :
  */
-package fr.epita.iam.tests.db;
+package fr.epita.iam.tests.xml;
 
 import java.util.List;
 
