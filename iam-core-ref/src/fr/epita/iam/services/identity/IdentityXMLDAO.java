@@ -7,13 +7,20 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -87,11 +94,71 @@ public class IdentityXMLDAO implements IdentityDAO {
 		}
 		final Node rootNode = doc.getElementsByTagName("identities").item(0);
 		final Element newIdentity = doc.createElement("identity");
-		// TODO add nodes
+		final Element displayNameElement = doc.createElement("displayName");
+		final Element emailElement = doc.createElement("email");
+		final Element uidElement = doc.createElement("uid");
+
+		newIdentity.appendChild(displayNameElement);
+		newIdentity.appendChild(emailElement);
+		newIdentity.appendChild(uidElement);
+
+		displayNameElement.setTextContent(entity.getDisplayName());
+		emailElement.setTextContent(entity.getEmail());
+		uidElement.setTextContent(entity.getUid());
+
 		rootNode.appendChild(newIdentity);
-		// TODO write file
+
+		writeDoc(doc);
 	}
 
+	/** 
+	 * <h3>Description</h3>  
+	 * <p>This methods allows to ...</p>
+	 *
+	 * <h3>Usage</h3>
+	 * <p>It should be used as follows :
+	 *   
+	 * <pre><code> ${enclosing_type} sample;
+	 *
+	 * //...
+	 *
+	 * sample.${enclosing_method}();
+	 *</code></pre>
+	 * </p>
+	 *  
+	 * @since $${version}
+	 * @see Voir aussi $${link}
+	 * @author ${user}
+	 *
+	 * ${tags}
+	 */
+	private void writeDoc(Document doc) {
+		try {
+			final PrintWriter pw = new PrintWriter(ConfigurationService.getProperty(ConfKey.XML_BACKEND_FILE));
+			pw.write(docToString(doc));
+			pw.flush();
+			pw.close();
+		} catch (final FileNotFoundException e) {
+			// TODO trace exception
+		}
+	}
+
+	private static String docToString(Document doc) {
+		try {
+			final StringWriter sw = new StringWriter();
+			final TransformerFactory tf = TransformerFactory.newInstance();
+			final Transformer transformer = tf.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+
+			transformer.transform(new DOMSource(doc), new StreamResult(sw));
+			return sw.toString();
+		} catch (final Exception ex) {
+			throw new RuntimeException("Error converting to String", ex);
+		}
+	}
 	/*
 	 * (non-Javadoc)
 	 * @see fr.epita.iam.services.DAO#delete(java.lang.Object)
