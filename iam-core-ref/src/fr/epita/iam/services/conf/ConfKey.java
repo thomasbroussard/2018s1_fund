@@ -61,6 +61,8 @@ public enum ConfKey {
 	 */
 	IDENTITY_INSERT_QUERY("identity.insert"),
 
+	XML_BACKEND_FILE("xml.file"),
+
 	;
 
 	private String key;

@@ -20,6 +20,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -29,6 +30,8 @@ import fr.epita.iam.exceptions.EntityDeletionException;
 import fr.epita.iam.exceptions.EntityReadException;
 import fr.epita.iam.exceptions.EntitySearchException;
 import fr.epita.iam.exceptions.EntityUpdateException;
+import fr.epita.iam.services.conf.ConfKey;
+import fr.epita.iam.services.conf.ConfigurationService;
 
 /**
  * <h3>Description</h3>
@@ -59,11 +62,10 @@ public class IdentityXMLDAO implements IdentityDAO {
 	 */
 	public IdentityXMLDAO() {
 		final List<Identity> results = new ArrayList<>();
-		final File file = new File("test/identities.xml");
 		document = null;
 
 		try {
-			document = getDocument(file);
+			document = getDocument();
 		} catch (ParserConfigurationException | SAXException | IOException e) {
 			// FIXME Use a logger to trace the following error
 			// LOGGER.error("An error occured", ${exception_var})
@@ -77,7 +79,16 @@ public class IdentityXMLDAO implements IdentityDAO {
 	 */
 	@Override
 	public void create(Identity entity) throws EntityCreationException {
+		Document doc = null;
+		try {
+			doc = getDocument();
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			throw new EntityCreationException(entity, e);
+		}
+		final Node rootNode = doc.getElementsByTagName("identities").item(0);
+		final Element newIdentity = document.createElement("identity");
 
+		rootNode.appendChild(newIdentity);
 	}
 
 	/*
@@ -115,7 +126,7 @@ public class IdentityXMLDAO implements IdentityDAO {
 	public List<Identity> search(Identity criteria) throws EntitySearchException {
 
 		final String xpathExpression = "/identities/identity[ ./email/text() = '" + criteria.getEmail()
-		+ "' and contains(./displayName/text(), '" + criteria.getDisplayName() + "')]";
+		+ "' or contains(./displayName/text(), '" + criteria.getDisplayName() + "')]";
 		final List<Element> elements = getElements(xpathExpression);
 
 		final List<Identity> results = new ArrayList<>();
@@ -210,7 +221,9 @@ public class IdentityXMLDAO implements IdentityDAO {
 	 *
 	 *         ${tags}
 	 */
-	private Document getDocument(final File file) throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
+	private Document getDocument() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
+		final File file = new File(ConfigurationService.getProperty(ConfKey.XML_BACKEND_FILE));
+
 		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		final DocumentBuilder db = dbf.newDocumentBuilder();
 		final Document document = db.parse(new FileInputStream(file));

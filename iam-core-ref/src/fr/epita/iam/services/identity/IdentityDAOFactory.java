@@ -99,6 +99,8 @@ public class IdentityDAOFactory {
 			}
 			break;
 		case "xml":
+			instance = new IdentityXMLDAO();
+			break;
 		default:
 			throw new Exception("not implemented yet");
 		}

@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,6 +21,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import fr.epita.iam.datamodel.Identity;
+import fr.epita.iam.services.identity.IdentityDAO;
+import fr.epita.iam.services.identity.IdentityDAOFactory;
 
 /**
  * <h3>Description</h3>
@@ -39,7 +42,43 @@ import fr.epita.iam.datamodel.Identity;
 public class XMLTests {
 
 
-	public static void main(String[] args) throws ParserConfigurationException, FileNotFoundException, SAXException, IOException {
+	public static void main(String[] args) throws Exception {
+		// rawXMLHandling();
+		final IdentityDAO dao = IdentityDAOFactory.getDAO();
+		dao.create(new Identity("Cécile Morin", "789", "cmor@cmor.com"));
+
+		final List<Identity> result = dao.search(new Identity("Cécile", null, null));
+
+		System.out.println(result);
+
+		if (result.size() < 1) {
+			throw new Exception("problem while searching");
+		}
+
+	}
+
+	/**
+	 * <h3>Description</h3>
+	 * <p>This methods allows to ...</p>
+	 *
+	 * <h3>Usage</h3>
+	 * <p>It should be used as follows :
+	 *
+	 * <pre><code> ${enclosing_type} sample;
+	 *
+	 * //...
+	 *
+	 * sample.${enclosing_method}();
+	 *</code></pre>
+	 * </p>
+	 *
+	 * @since $${version}
+	 * @see Voir aussi $${link}
+	 * @author ${user}
+	 *
+	 * ${tags}
+	 */
+	private static void rawXMLHandling() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
 		final File file = new File("test/identities.xml");
 		if (!file.exists()) {
 			return;
@@ -61,9 +100,6 @@ public class XMLTests {
 			identity.setUid(uid);
 
 		}
-
-
-
 	}
 
 }
