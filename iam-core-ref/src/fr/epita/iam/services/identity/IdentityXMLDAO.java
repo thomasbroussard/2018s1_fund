@@ -86,9 +86,10 @@ public class IdentityXMLDAO implements IdentityDAO {
 			throw new EntityCreationException(entity, e);
 		}
 		final Node rootNode = doc.getElementsByTagName("identities").item(0);
-		final Element newIdentity = document.createElement("identity");
-
+		final Element newIdentity = doc.createElement("identity");
+		// TODO add nodes
 		rootNode.appendChild(newIdentity);
+		// TODO write file
 	}
 
 	/*
@@ -124,10 +125,17 @@ public class IdentityXMLDAO implements IdentityDAO {
 	 */
 	@Override
 	public List<Identity> search(Identity criteria) throws EntitySearchException {
+		Document doc = null;
+		try {
+			doc = getDocument();
+		} catch (ParserConfigurationException | SAXException | IOException e) {
+			// FIXME Use a logger to trace the following error
+			// LOGGER.error("An error occured", ${exception_var})
+		}
 
 		final String xpathExpression = "/identities/identity[ ./email/text() = '" + criteria.getEmail()
 		+ "' or contains(./displayName/text(), '" + criteria.getDisplayName() + "')]";
-		final List<Element> elements = getElements(xpathExpression);
+		final List<Element> elements = getElements(doc, xpathExpression);
 
 		final List<Identity> results = new ArrayList<>();
 
@@ -176,12 +184,12 @@ public class IdentityXMLDAO implements IdentityDAO {
 		return identity;
 	}
 
-	private List<Element> getElements(String xpathExpr) {
+	private List<Element> getElements(Document doc, String xpathExpr) {
 		final XPathFactory xpathFactory = XPathFactory.newInstance();
 		javax.xml.xpath.XPathExpression expr;
 		try {
 			expr = xpathFactory.newXPath().compile(xpathExpr);
-			final NodeList xpathEval = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
+			final NodeList xpathEval = (NodeList) expr.evaluate(doc, XPathConstants.NODESET);
 			final List<Element> results = new ArrayList<>();
 			for (int i = 0; i < xpathEval.getLength(); i++) {
 				results.add((Element) xpathEval.item(i));
@@ -223,7 +231,9 @@ public class IdentityXMLDAO implements IdentityDAO {
 	 */
 	private Document getDocument() throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
 		final File file = new File(ConfigurationService.getProperty(ConfKey.XML_BACKEND_FILE));
-
+		if (!file.exists()) {
+			file.createNewFile();
+		}
 		final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		final DocumentBuilder db = dbf.newDocumentBuilder();
 		final Document document = db.parse(new FileInputStream(file));
